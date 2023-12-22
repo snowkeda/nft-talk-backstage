@@ -34,7 +34,6 @@ const Login: React.FC = () => {
   const [userLoginState, setUserLoginState] = useState({});
   const [type, setType] = useState<string>('account');
   const { initialState, setInitialState } = useModel('@@initialState');
-
   const containerClassName = useEmotionCss(() => {
     return {
       display: 'flex',
@@ -45,15 +44,13 @@ const Login: React.FC = () => {
         "url('https://mdn.alipayobjects.com/yuyan_qk0oxh/afts/img/V-_oS6r-i7wAAAAAAAAAAAAAFl94AQBr')",
       backgroundSize: '100% 100%',
     };
+
   });
 
   const intl = useIntl();
 
   const fetchUserInfo = async (Authorization = '') => {
-    console.log(Authorization)
-    console.log(initialState)
     const userInfo = await initialState?.fetchUserInfo(Authorization);
-    console.log(userInfo)
     if (userInfo) {
       flushSync(() => {
         setInitialState((s) => {
@@ -96,7 +93,9 @@ const Login: React.FC = () => {
         await fetchUserInfo(msg.data);
         message.success(defaultLoginSuccessMessage);
         const urlParams = new URL(window.location.href).searchParams;
-        await history.push(urlParams.get('redirect') || '/');
+        setTimeout(() => {
+          history.push(urlParams.get('redirect') || '/');
+        }, 1000)
         return;
       }
       // 如果失败去设置用户错误信息

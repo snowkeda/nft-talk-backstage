@@ -47,11 +47,10 @@ export async function getInitialState() {
 
 // ProLayout 支持的api https://procomponents.ant.design/components/layout
 export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) => {
-  console.log(initialState)
   return {
-    actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
+    // actionsRender: () => [<Question key="doc" />, <SelectLang key="SelectLang" />],
     avatarProps: {
-      src: initialState?.currentUser?.avatar,
+      src: initialState?.currentUser?.avatar || 'https://gw.alipayobjects.com/zos/rmsportal/BiazfanxmamNRoxxVxka.png',
       title: <AvatarName />,
       render: (_, avatarChildren) => {
         return <AvatarDropdown>{avatarChildren}</AvatarDropdown>;
@@ -72,9 +71,12 @@ export const layout: RunTimeLayoutConfig = ({ initialState, setInitialState }) =
     onPageChange: () => {
       const { location } = history;
       // 如果没有登录，重定向到 login
-      /* if (!initialState?.currentUser && location.pathname !== loginPath) {
-        history.push(loginPath);
-      } */
+      setTimeout(() => {
+        if (!initialState?.currentUser && location.pathname !== loginPath) {
+          history.push(loginPath);
+        }
+      }, 500);
+      
     },
     layoutBgImgList: [
       {

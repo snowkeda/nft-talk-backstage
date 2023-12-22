@@ -3,7 +3,7 @@ import { PageContainer, ProTable, ModalForm, ProFormCheckbox, ProFormText } from
 import type { ProColumns, ProFormInstance  } from '@ant-design/pro-components';
 import _ from 'lodash';
 import { useModel } from '@umijs/max';
-import { Button, message, Modal, Typography, Space } from 'antd';
+import { Button, message, Modal, Typography } from 'antd';
 import { getBackstageUserList, addBackstageUser, editBackstageUser, delBackstageUser } from '@/services/apis';
 import React, { useRef } from 'react';
 

@@ -68,7 +68,8 @@ export const AvatarDropdown: React.FC<GlobalHeaderRightProps> = ({ menu, childre
         loginOut();
         return;
       }
-      history.push(`/account/${key}`);
+      // console.log(key)
+      // history.push(`/account/${key}`);
     },
     [setInitialState],
   );

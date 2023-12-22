@@ -51,13 +51,19 @@ export const errorConfig: RequestConfig = {
     // 错误抛出
     errorThrower: (res) => {
       console.log(res)
-      const { success, data, errCode, errMessage, showType } =
-        res as unknown as ResponseStructure;
+      const { success, data, errCode, errMessage, showType } = res as unknown as ResponseStructure;
+      console.log(!success && (errCode !== '403' && errCode))
+      console.log(errMessage === 'Full authentication is required to access this resource')
       if (!success && (errCode !== '403' && errCode) ) {
         const error: any = new Error(errMessage);
         error.name = 'BizError';
         error.info = { errCode, errMessage, showType, data };
         throw error; // 抛出自制的错误
+      } else if (errMessage === 'Full authentication is required to access this resource') {
+        const error: any = new Error(errMessage);
+        error.name = 'LoginError';
+        error.info = { errCode, errMessage, showType, data };
+        throw error;
       }
     },
     // 错误接收及处理
@@ -65,9 +71,9 @@ export const errorConfig: RequestConfig = {
       console.log(error, opts)
       if (opts?.skipErrorHandler) throw error;
       // 我们的 errorThrower 抛出的错误。
+      console.log(error.name)
       if (error.name === 'BizError') {
         const errorInfo: ResponseStructure | undefined = error.info;
-        console.log(errorInfo)
         if (errorInfo) {
           const { errMessage, errCode } = errorInfo;
           switch (errorInfo.showType) {
@@ -93,6 +99,9 @@ export const errorConfig: RequestConfig = {
               message.error(errMessage);
           }
         }
+      } else if (error.name === 'LoginError') {
+        sessionStorage.removeItem('Authorization')
+        message.error(error.info.errMessage);
       } else if (error.response) {
         // Axios 的错误
         // 请求成功发出且服务器也响应了状态码，但状态代码超出了 2xx 的范围

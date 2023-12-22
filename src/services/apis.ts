@@ -2,7 +2,9 @@ import { request } from '@umijs/max';
 
 const base = '/api'
 
-const Authorization = sessionStorage.getItem('Authorization') || '';
+const Authorization = () => {
+  return sessionStorage.getItem('Authorization') || '';
+}
 
 
 // 登录 获取token
@@ -22,7 +24,7 @@ export async function getAuthLogout() {
   return request(`${base}/auth/logout`, {
     method: 'POST',
     headers: {
-      Authorization,
+      Authorization: Authorization(),
     }
   });
 }
@@ -32,7 +34,7 @@ export async function getAuthInfo(options) {
   return request(`${base}/auth/info`, {
     method: 'GET',
     headers: {
-      Authorization: options.Authorization || Authorization,
+      Authorization: options.Authorization || Authorization(),
     }
   });
 }
@@ -42,7 +44,7 @@ export async function getBackstageUserList(options) {
     method: 'GET',
     params: options.params,
     headers: {
-      Authorization: options.Authorization || Authorization,
+      Authorization: options.Authorization || Authorization(),
     }
   });
 }
@@ -52,7 +54,7 @@ export async function addBackstageUser(options) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization,
+      Authorization: Authorization(),
     },
     data: options.params,
   });
@@ -63,7 +65,7 @@ export async function editBackstageUser(options) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization,
+      Authorization: Authorization(),
     },
     data: options.params,
   });
@@ -74,7 +76,70 @@ export async function delBackstageUser(options) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization,
+      Authorization: Authorization(),
+    },
+    data: options.params,
+  });
+}
+// 矿机兑换列表 
+export async function getMineExchangeList(options) {
+  return request(`${base}/mine/config`, {
+    method: 'GET',
+    params: options.params,
+    headers: {
+      Authorization: options.Authorization || Authorization(),
+    }
+  });
+}
+// 矿机统计
+export async function getMineStatistic(options = {}) {
+  return request(`${base}/mine/statistic`, {
+    method: 'GET',
+    params: options?.params,
+    headers: {
+      Authorization: options.Authorization || Authorization(),
+    }
+  });
+}
+// 矿机兑换 新增  /mine/add
+export async function addMineExchange(options) {
+  return request(`${base}/mine/add`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: Authorization(),
+    },
+    data: options.params,
+  });
+}
+// 矿机兑换-启用 /mine/stop
+export async function stopMineExchange(options) {
+  return request(`${base}/mine/stop`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: Authorization(),
+    },
+    data: options.params,
+  });
+}
+// 矿机审批-列表
+export async function getMineProduceList(options = {}) {
+  return request(`${base}/mine/produce-list`, {
+    method: 'GET',
+    params: options?.params,
+    headers: {
+      Authorization: options.Authorization || Authorization(),
+    }
+  });
+}
+// 矿机审批-批量审批
+export async function auditMine(options) {
+  return request(`${base}/mine/audit`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      Authorization: Authorization(),
     },
     data: options.params,
   });
